@@ -1,4 +1,4 @@
-package com.acme.customer.api;
+package com.acme.customer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
