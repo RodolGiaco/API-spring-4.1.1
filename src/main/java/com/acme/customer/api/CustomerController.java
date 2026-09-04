@@ -1,8 +1,11 @@
 package com.acme.customer.api;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.acme.customer.application.CustomerService;
+import com.acme.customer.domain.Customer;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -10,8 +13,37 @@ import java.util.List;
 @RequestMapping("/api/v1/customers")
 public class CustomerController {
 
+    private final CustomerService customerService;
+
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
     @GetMapping
     public List<CustomerResponse> findAll() {
-        return List.of();
+        return customerService.findAll()
+                .stream()
+                .map(CustomerController::toResponse)
+                .toList();
+    }
+
+    @PostMapping
+    public ResponseEntity<CustomerResponse> create(
+            @Valid @RequestBody CustomerCreateRequest request) {
+
+        Customer customer = customerService.create(
+                request.name(),
+                request.email()
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(customer));
+    }
+
+    private static CustomerResponse toResponse(Customer customer) {
+        return new CustomerResponse(
+                customer.id(),
+                customer.name(),
+                customer.email()
+        );
     }
 }
