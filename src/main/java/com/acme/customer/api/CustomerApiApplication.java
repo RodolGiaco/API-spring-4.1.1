@@ -1,4 +1,4 @@
-package com.acme.customer_api;
+package com.acme.customer.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
