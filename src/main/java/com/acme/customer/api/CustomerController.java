@@ -27,6 +27,11 @@ public class CustomerController {
                 .toList();
     }
 
+    @GetMapping("/{id}")
+    public CustomerResponse findById(@PathVariable Long id) {
+        return toResponse(customerService.findById(id));
+    }
+
     @PostMapping
     public ResponseEntity<CustomerResponse> create(
             @Valid @RequestBody CustomerCreateRequest request) {
