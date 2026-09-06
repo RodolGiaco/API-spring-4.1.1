@@ -3,11 +3,12 @@ package com.acme.customer.application;
 import com.acme.customer.domain.Customer;
 import com.acme.customer.domain.CustomerRepository;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Locale;
 
 @Service
+@Transactional(readOnly = true)
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
@@ -20,6 +21,7 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
+    @Transactional
     public Customer create(String name, String email) {
         Customer customer = new Customer(
                 null,
