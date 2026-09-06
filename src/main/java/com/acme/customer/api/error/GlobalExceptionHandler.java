@@ -1,5 +1,6 @@
 package com.acme.customer.api.error;
 
+import com.acme.customer.application.CustomerEmailAlreadyExistsException;
 import com.acme.customer.application.CustomerNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -22,6 +23,23 @@ public class GlobalExceptionHandler {
 
         problem.setTitle("Customer not found");
         problem.setType(URI.create("urn:problem:customer-not-found"));
+
+        return problem;
+    }
+
+    @ExceptionHandler(CustomerEmailAlreadyExistsException.class)
+    public ProblemDetail handleCustomerEmailAlreadyExists(
+            CustomerEmailAlreadyExistsException exception) {
+
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.CONFLICT,
+                exception.getMessage()
+        );
+
+        problem.setTitle("Customer already exists");
+        problem.setType(
+                URI.create("urn:problem:customer-email-conflict")
+        );
 
         return problem;
     }
