@@ -11,8 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.springframework.test.context.ActiveProfiles;
+
 @SpringBootTest
 @Import(TestcontainersConfiguration.class)
+@ActiveProfiles("test")
 @Transactional
 class CustomerPersistenceIntegrationTest {
 
