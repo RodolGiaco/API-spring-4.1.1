@@ -23,47 +23,25 @@ public class CustomerService {
     }
     @Transactional
     public Customer create(String name, String email) {
-
-        String normalizedEmail =
-                email.trim().toLowerCase(Locale.ROOT);
+        String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
 
         if (customerRepository.existsByEmail(normalizedEmail)) {
             throw new CustomerEmailAlreadyExistsException(normalizedEmail);
         }
 
-        return customerRepository.save(
-                new Customer(
-                        null,
-                        name.trim(),
-                        normalizedEmail
-                )
-        );
+        return customerRepository.save(new Customer(null, name.trim(), normalizedEmail));
     }
     @Transactional
     public Customer update(Long id, String name, String email) {
-
         Customer existing = findById(id);
+        String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
 
-        String normalizedEmail =
-                email.trim().toLowerCase(Locale.ROOT);
-
-        if (customerRepository.existsByEmailAndIdNot(
-                normalizedEmail,
-                id
-        )) {
-            throw new CustomerEmailAlreadyExistsException(
-                    normalizedEmail
-            );
+        if (customerRepository.existsByEmailAndIdNot(normalizedEmail, id)) {
+            throw new CustomerEmailAlreadyExistsException(normalizedEmail);
         }
-
-        return customerRepository.save(
-                new Customer(
-                        existing.id(),
-                        name.trim(),
-                        normalizedEmail
-                )
-        );
+        return customerRepository.save(new Customer(existing.id(), name.trim(), normalizedEmail));
     }
+
     @Transactional
     public void delete(Long id) {
         Customer customer = findById(id);
