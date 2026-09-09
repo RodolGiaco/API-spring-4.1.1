@@ -59,37 +59,22 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerResponse> create(
-            @Valid @RequestBody CustomerCreateRequest request) {
+    public ResponseEntity<CustomerResponse> create(@Valid @RequestBody CustomerCreateRequest request) {
 
-        Customer customer = customerService.create(
-                request.name(),
-                request.email()
-        );
-
+        Customer customer = customerService.create(request.name(), request.email());
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(customer.id())
                 .toUri();
 
-        return ResponseEntity
-                .created(location)
-                .body(toResponse(customer));
+        return ResponseEntity.created(location).body(toResponse(customer));
     }
     @PutMapping("/{id}")
-    public CustomerResponse update(
-            @PathVariable Long id,
-            @Valid @RequestBody CustomerUpdateRequest request) {
-
-        return toResponse(
-                customerService.update(
-                        id,
-                        request.name(),
-                        request.email()
-                )
-        );
+    public CustomerResponse update(@PathVariable Long id, @Valid @RequestBody CustomerUpdateRequest request) {
+        return toResponse(customerService.update(id, request.name(), request.email()));
     }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
@@ -97,10 +82,6 @@ public class CustomerController {
     }
 
     private static CustomerResponse toResponse(Customer customer) {
-        return new CustomerResponse(
-                customer.id(),
-                customer.name(),
-                customer.email()
-        );
+        return new CustomerResponse(customer.id(), customer.name(), customer.email());
     }
 }
