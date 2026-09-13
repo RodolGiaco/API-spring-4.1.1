@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+@Tag(
+        name = "Customers",
+        description = "Customer management operations"
+)
 @RestController
 @RequestMapping("/api/v1/customers")
 public class CustomerController {
@@ -52,12 +56,19 @@ public class CustomerController {
                 result.totalPages()
         );
     }
-
+    @Operation(
+            summary = "Get customer by id",
+            description = "Returns a customer identified by its id"
+    )
     @GetMapping("/{id}")
     public CustomerResponse findById(@PathVariable Long id) {
         return toResponse(customerService.findById(id));
     }
 
+    @Operation(
+            summary = "Create customer",
+            description = "Creates a new customer"
+    )
     @PostMapping
     public ResponseEntity<CustomerResponse> create(@Valid @RequestBody CustomerCreateRequest request) {
 
@@ -70,11 +81,20 @@ public class CustomerController {
 
         return ResponseEntity.created(location).body(toResponse(customer));
     }
+
+    @Operation(
+            summary = "Update customer",
+            description = "Updates an existing customer"
+    )
     @PutMapping("/{id}")
     public CustomerResponse update(@PathVariable Long id, @Valid @RequestBody CustomerUpdateRequest request) {
         return toResponse(customerService.update(id, request.name(), request.email()));
     }
 
+    @Operation(
+            summary = "Delete customer",
+            description = "Deletes an existing customer"
+    )
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
