@@ -1,0 +1,7 @@
+# --- claude kit ---
+.claude/hooks/
+.claude/settings.json
+.claude/kit-state/
+.claude/logs/
+.idea/
+# --- end claude kit ---

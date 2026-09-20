@@ -1,0 +1,33 @@
+# Single per-project file. Every hook and script reads from here.
+# Nothing else in the kit contains a project-specific value.
+# Values with spaces must be quoted: this file is sourced, not parsed.
+
+# Branch that only changes through a pull request merged by GitHub.
+KIT_MAIN_BRANCH=main
+
+# Prefix of the branch the cycle creates for each issue.
+# Expected shape: <prefix><number>-<slug>
+KIT_ISSUE_BRANCH_PREFIX=issue/
+
+# Prefix of the lane used to repair the kit itself, which is not an issue.
+# Expected shape: <prefix><slug>
+KIT_MAINTENANCE_BRANCH_PREFIX=kit/
+
+# --- project commands -------------------------------------------------------
+# Empty means the step is skipped, so the kit works in a repository that has no
+# build yet. Fill these in before running the first issue: the acceptance
+# auditor reports every criterion as unverifiable while KIT_TEST_CMD is empty.
+#
+# The format command and its check must be the same formatter, or CI will
+# reject files the cycle just formatted.
+#
+# Maven:   KIT_JAVA_VERSION=21
+#          KIT_FORMAT_CHECK_CMD="mvn -B -q spotless:check"
+#          KIT_TEST_CMD="mvn -B test"
+# Gradle:  KIT_JAVA_VERSION=21
+#          KIT_FORMAT_CHECK_CMD="./gradlew spotlessCheck"
+#          KIT_TEST_CMD="./gradlew test"
+
+KIT_JAVA_VERSION=21
+KIT_FORMAT_CHECK_CMD=
+KIT_TEST_CMD=mvn -B test
